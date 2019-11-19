@@ -19,10 +19,20 @@ app.post("/", (req, res)=> {
     console.log(response);
     console.log("Bluetooth Mac Address: " + data._bluetoothMacAddress);
     res.send(response);
-
   });
- 
 });
+
+app.post("/state", (req, res)=> {
+  request.post({
+    headers: {'content-type': 'application/json;charset=utf-8' },
+    url: "http://192.168.1.1/osc/state", 
+    form: {
+
+    }}, (error, response, body)=> {
+      console.log(response);
+      res.send(response)
+    });
+  });
 
 app.listen(3000, ()=> {
   console.log("THETA Node Server running on port 3000.");
