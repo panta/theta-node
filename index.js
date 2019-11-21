@@ -75,8 +75,14 @@ app.post("/listFiles", (req, res) => {
 
     }
   }, (error, response, body) => {
-    console.log(response);
-    res.send(response);
+    
+    let secondImageUri = body.results.entries[1].fileUrl;
+    console.log("first image uri = " + secondImageUri);
+    let webPage = "<h1>Body of response</h1>" + "<pre>" +
+      JSON.stringify(body, null, 2) + "</pre> + <hr>" ;
+    webPage = webPage + "<img width='500' src='" + secondImageUri + "'>";
+    
+    res.send(webPage);
   });
 });
 
