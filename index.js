@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+var config = require('./config');
+
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -83,6 +85,33 @@ app.post("/listFiles", (req, res) => {
     webPage = webPage + "<img width='500' src='" + secondImageUri + "'>";
     
     res.send(webPage);
+  });
+});
+
+
+app.post("/setIpAddress", (req, res) => {
+  request({
+    headers: {
+      'content-type': 'application/json;charset=utf-8'
+    },
+    url: "http://192.168.1.1/osc/commands/execute",
+    method: "POST",
+    json: {
+      name: "camera._setAccessPoint",
+      parameters: {
+        "ssid": config.ssid,  // change to string for your ssid
+        "security": "WPA/WPA2 PSK",
+        "password": config.password,  // set string to the password of your router
+        "connectionPriority": 1,
+        "ipAddressAllocation": "static",
+        "ipAddress": "192.168.2.123",
+        "subnetMask": "255.255.255.0",
+        "defaultGateway": "192.168.2.1"
+      }
+    }
+  }, (error, response, body) => {
+    console.log(response);
+    res.send(response);
   });
 });
 
