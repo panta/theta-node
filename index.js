@@ -88,7 +88,9 @@ app.post("/listFiles", (req, res) => {
   });
 });
 
-
+// The next example uses access point mode to configure client mode.
+// After you configure the camera for client mode, 
+// you may need to reboot the camera.
 app.post("/setIpAddress", (req, res) => {
   request({
     headers: {
