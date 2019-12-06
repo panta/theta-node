@@ -46,3 +46,5 @@ after changing the IP address.
 ## Reference
 
 * [RICOH THETA API v2.1](https://api.ricoh/docs/theta-web-api-v2.1/)
+
+

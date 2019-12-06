@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
+const CORS_ANYWHERE = "http://127.0.0.1:3000";
+
 var config = require('./config');
 
 
@@ -115,6 +117,74 @@ app.post("/setIpAddress", (req, res) => {
     console.log(response);
     res.send(response);
   });
+});
+
+app.post("/disableSleep", (req, res) => {
+  request({
+    headers: {
+      'content-type': 'application/json;charset=utf-8'
+    },
+    url: "http://192.168.1.1/osc/commands/execute",
+    method: "POST",
+    json: {
+      name: "camera.setOptions",
+      parameters: {
+        "options": {
+          "sleepDelay": 65535,
+          "offDelay": 65535
+        }
+      }
+    }
+  }, (error, response, body) => {
+    console.log(response);
+    res.send(response);
+  });
+});
+
+app.post("/checkSleep", (req, res) => {
+  request({
+    headers: {
+      'content-type': 'application/json;charset=utf-8'
+    },
+    url: "http://192.168.1.1/osc/commands/execute",
+    method: "POST",
+    json: {
+      name: "camera.getOptions",
+      parameters: {
+        "optionNames": [
+          "sleepDelay",
+          "offDelay"
+        ]
+      }
+    }
+  }, (error, response, body) => {
+    console.log(response);
+    res.send(response);
+  });
+});
+
+app.post("/livePreview", (req, res) => {
+  request({
+    headers: {
+      'content-type': 'application/json;charset=utf-8'
+    },
+    url: CORS_ANYWHERE + "http://192.168.1.1/osc/commands/execute",
+    method: "POST",
+    json: {
+      name: "camera.getLivePreview"
+    }
+  }, (error, response, body) => {
+  
+  });
+});
+
+
+// not working
+// https://github.com/dirtshell/amelia_viewer/blob/master/assets/js/ricoh_api.js
+// getting CORS problem
+// https://github.com/Rob--W/cors-anywhere
+app.post("/showPreview", (req, res)=> {
+  res.sendFile(__dirname + "/mjpeg.html");
 });
 
 
