@@ -119,6 +119,29 @@ app.post("/setIpAddress", (req, res) => {
   });
 });
 
+app.post("/setDynamicClient", (req, res) => {
+  request({
+    headers: {
+      'content-type': 'application/json;charset=utf-8'
+    },
+    url: "http://192.168.1.1/osc/commands/execute",
+    method: "POST",
+    json: {
+      name: "camera._setAccessPoint",
+      parameters: {
+        "ssid": config.ssid,  // change to string for your ssid
+        "security": "WPA/WPA2 PSK",
+        "password": config.password,  // set string to the password of your router
+        "connectionPriority": 1,
+        "ipAddressAllocation": "dynamic"
+      }
+    }
+  }, (error, response, body) => {
+    console.log(response);
+    res.send(response);
+  });
+});
+
 app.post("/disableSleep", (req, res) => {
   request({
     headers: {
