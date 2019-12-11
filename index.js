@@ -4,10 +4,13 @@ const request = require("request");
 const bodyParser = require("body-parser");
 
 const app = express();
+const digestRequest = require('request-digest')('THETAYL00105377', '00105377');
+const clientModeURL = "http://192.168.2.101";
 
 const CORS_ANYWHERE = "http://127.0.0.1:3000";
 
-var config = require('./config');
+const config = require('./config');
+
 
 
 app.use(bodyParser.urlencoded({
@@ -44,16 +47,16 @@ app.post("/state", (req, res) => {
 
 // example of POST with simple payload
 
-app.post("/takePicture", (req, res) => {
+app.post('/takePicture', (req, res) => {
   request({
     headers: {
       'content-type': 'application/json;charset=utf-8'
     },
     url: "http://192.168.1.1/osc/commands/execute",
-    method: "POST",
+    method: 'POST',
     json: {
-      name: "camera.takePicture"
-    }
+      name: 'camera.takePicture',
+    },
   }, (error, response, body) => {
     console.log(response);
     res.send(response);
@@ -210,7 +213,54 @@ app.post("/showPreview", (req, res)=> {
   res.sendFile(__dirname + "/mjpeg.html");
 });
 
+// Digest Auth Tests
+
+app.post('/digestState', (req, res) => {
+  digestRequest.requestAsync({
+    host: clientModeURL,
+    path: '/osc/state',
+    method: 'POST',
+    json: true,
+    body: {
+    },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => {
+      console.log(response.body);
+      res.send(response.body);
+    })
+    .catch((error) => {
+      console.log(error.statusCode);
+      console.log(error.body);
+    });
+});
+
+app.post('/clientTakePicture', (req, res) => {
+  digestRequest.requestAsync({
+    host: clientModeURL,
+    path: '/osc/commands/execute',
+    method: 'POST',
+    json: true,
+    body: {
+      name: 'camera.takePicture',
+    },
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+  })
+    .then((response) => {
+      console.log(response.body);
+      res.send(response.body);
+    })
+    .catch((error) => {
+      console.log(error.statusCode);
+      console.log(error.body);
+    });
+});
+
 
 app.listen(3000, () => {
-  console.log("THETA Node Server running on port 3000.");
+  console.log('THETA Node Server running on port 3000.');
 });

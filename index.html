@@ -14,7 +14,10 @@
     <div class="container pt-5">
 
 
-        <h1>Test of RICOH THETA API with Node and Express</h1>
+        <h1>RICOH THETA API with Node and Express - AP Mode Tests</h1>
+        <p>
+            In access point (AP) mode, the IP address is 192.168.1.1
+        </p>
         <div class="pt-2">
             <form action="/" method="POST">
                 <button class="btn btn-primary" type="submit" name="info">Get Info</button>
@@ -41,6 +44,16 @@
             </form> Client mode IP only.  This does not change the AP mode IP address.          
             <form action="/setDynamicClient" method="POST" class="pt-3">
                 <button class="btn btn-primary" type="submit" name="state">Return to Dynamic IP allocation</button>
+            </form>              
+            <hr>
+            <h1>Client Mode - Digest Authentication Tests</h1>
+            THETA V shows green Wi-Fi LED. 
+            <br>
+            <form action="/digestState" method="POST" class="pt-3">
+                <button class="btn btn-primary" type="submit" name="state">Camera State - Client Mode</button>
+            </form>   
+            <form action="/clientTakePicture" method="POST" class="pt-3">
+                <button class="btn btn-primary" type="submit" name="state">Take Picture - Client Mode</button>
             </form>              
             <hr>
             <h1>commands below do not work</h1>
