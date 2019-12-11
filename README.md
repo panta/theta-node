@@ -42,6 +42,10 @@ Important - Changing the IP address does not change the IP address for AP mode.
 It will only change the IP address for client mode. You may need to reboot your camera
 after changing the IP address.
 
+### Client Mode
+
+There are some tests for client mode where the THETA uses Digest Authentication.
+
 
 ## Reference
 
