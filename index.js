@@ -6,8 +6,8 @@ const request = require("request");
 const bodyParser = require("body-parser");
 
 const app = express();
-const digestRequest = require('request-digest')('THETAYL00105377', '00105377');
-const clientModeURL = "http://192.168.2.101";
+const digestRequest = require('request-digest')(process.env.THETA_ID, process.env.THETA_PASSWORD);
+const clientModeURL = "http://" + process.env.THETA_CURRENT_IP;
 
 const CORS_ANYWHERE = "http://127.0.0.1:3000";
 
