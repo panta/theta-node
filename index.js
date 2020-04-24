@@ -1,4 +1,6 @@
 //jshint esversion:6
+require('dotenv').config();
+
 const express = require("express");
 const request = require("request");
 const bodyParser = require("body-parser");
@@ -111,9 +113,9 @@ app.post("/setIpAddress", (req, res) => {
         "password": config.password,  // set string to the password of your router
         "connectionPriority": 1,
         "ipAddressAllocation": "static",
-        "ipAddress": config.ipAddress || "192.168.2.123",
-        "subnetMask": config.subnetMask || "255.255.255.0",
-        "defaultGateway": config.defaultGateway || "192.168.2.1"
+        "ipAddress": config.ipAddress,
+        "subnetMask": config.subnetMask,
+        "defaultGateway": config.defaultGateway
       }
     }
   }, (error, response, body) => {
