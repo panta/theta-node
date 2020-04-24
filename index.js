@@ -7,13 +7,66 @@ const bodyParser = require("body-parser");
 
 const app = express();
 const digestRequest = require('request-digest')(process.env.THETA_ID, process.env.THETA_PASSWORD);
-const clientModeURL = "http://" + process.env.THETA_CURRENT_IP;
 
 const CORS_ANYWHERE = "http://127.0.0.1:3000";
 
 const config = require('./config');
 
 
+// from https://stackoverflow.com/a/54098693/1363486
+function getArgs () {
+    const args = {};
+    process.argv
+        .slice(2, process.argv.length)
+        .forEach( arg => {
+        // long arg
+        if (arg.slice(0,2) === '--') {
+            const longArg = arg.split('=');
+            const longArgFlag = longArg[0].slice(2,longArg[0].length);
+            const longArgValue = longArg.length > 1 ? longArg[1] : true;
+            args[longArgFlag] = longArgValue;
+        }
+        // flags
+        else if (arg[0] === '-') {
+            const flags = arg.slice(1,arg.length).split('');
+            flags.forEach(flag => {
+            args[flag] = true;
+            });
+        }
+    });
+    return args;
+}
+
+function isTrue(value){
+    if (typeof(value) === 'string'){
+        value = value.trim().toLowerCase();
+    }
+    switch(value){
+        case true:
+        case "true":
+        case "t":
+        case 1:
+        case "1":
+        case "on":
+        case "yes":
+        case "y":
+            return true;
+        default: 
+            return false;
+    }
+}
+
+const args = getArgs();
+console.log(args);
+
+const currentThetaIP = args.thetaIp || args.ip || args.I || process.env.THETA_CURRENT_IP;
+
+const clientMode = isTrue(args['client-mode'] || args.C);
+const clientModeIP = currentThetaIP;
+const clientModeURL = "http://" + clientModeIP;
+
+console.log("client mode:", clientMode);
+console.log("client mode url:", clientModeURL);
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -113,7 +166,7 @@ app.post("/setIpAddress", (req, res) => {
         "password": config.password,  // set string to the password of your router
         "connectionPriority": 1,
         "ipAddressAllocation": "static",
-        "ipAddress": config.ipAddress,
+        "ipAddress": currentThetaIP,
         "subnetMask": config.subnetMask,
         "defaultGateway": config.defaultGateway
       }
