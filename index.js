@@ -111,9 +111,9 @@ app.post("/setIpAddress", (req, res) => {
         "password": config.password,  // set string to the password of your router
         "connectionPriority": 1,
         "ipAddressAllocation": "static",
-        "ipAddress": "192.168.2.123",
-        "subnetMask": "255.255.255.0",
-        "defaultGateway": "192.168.2.1"
+        "ipAddress": config.ipAddress || "192.168.2.123",
+        "subnetMask": config.subnetMask || "255.255.255.0",
+        "defaultGateway": config.defaultGateway || "192.168.2.1"
       }
     }
   }, (error, response, body) => {
